@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet"  href="pizza.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="login.js"></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+</head>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const menuToggle = document.querySelector(".menu-toggle");
+        const navbar = document.querySelector(".navbar");
+    
+        menuToggle.addEventListener("click", function () {
+            navbar.classList.toggle("active");
+        });
+    
+        const navbarLinks = document.querySelectorAll(".navbar a");
+        navbarLinks.forEach((link) => {
+            link.addEventListener("click", function () {
+                navbar.classList.remove("active");
+            });
+        });
+    });
+    
+   
+    const pizzaData = [
+        { size: "Small", price: 5 },
+        { size: "Medium", price: 10 },
+        { size: "Large", price: 15 }
+    ];
+    
+    let totalAmount = 0;
+    
+    function selectSize(button, index) {
+        const card = button.closest(".pizza-card");
+        const sizeButtons = card.querySelectorAll(".size-button");
+        const price = card.querySelector(".price");
+        const counterValue = card.querySelector(".counter-value");
+    
+        card.dataset.selectedSize = index;
+    
+        sizeButtons.forEach((btn) => btn.classList.remove("selected"));
+        counterValue.textContent = "0";
+    
+        button.classList.add("selected");
+    
+        const pizzaPrice = pizzaData[index].price;
+        price.textContent = `$${pizzaPrice}`;
+    
+        updateTotal();
+    }
+    
+    function clearSelection(card) {
+        const selectedSize = card.dataset.selectedSize;
+    
+        if (selectedSize !== undefined) {
+            totalAmount -= parseInt(selectedSize, 10);
+            card.querySelector(".price").textContent = '$0';
+            delete card.dataset.selectedSize;
+            updateTotal();
+        }
+    }
+    
+    function updateTotal() {
+        const totalDisplay = document.getElementById("total-amount");
+    
+       
+        const selectedCards = document.querySelectorAll(".pizza-card[data-selected-size]");
+    
+        
+        totalAmount = Array.from(selectedCards).reduce((total, card) => {
+            const selectedIndex = parseInt(card.dataset.selectedSize, 10);
+            const counterValue = parseInt(card.querySelector(".counter-value").textContent, 10) || 0;
+            const pizzaPrice = pizzaData[selectedIndex].price * counterValue;
+            return total + pizzaPrice;
+        }, 0);
+    
+      
+        totalDisplay.textContent = `Total: $${totalAmount}`;
+    }
+    
+    function incrementCounter(button) {
+        const counterValue = button.parentElement.querySelector('.counter-value');
+        let value = parseInt(counterValue.textContent);
+        if (!isNaN(value)) {
+            value++;
+            counterValue.textContent = value;
+            
+            updateTotal();
+        }
+    }
+    
+    
+    function decrementCounter(button) {
+        const counterValue = button.parentElement.querySelector('.counter-value');
+        let value = parseInt(counterValue.textContent);
+        if (!isNaN(value) && value > 0) {
+            value--;
+            counterValue.textContent = value;
+           
+            updateTotal();
+        }
+    }
+    </script>
+    
+
+<body>
+    <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="pizza.html" id="pizza-link">Pizza</a></li>
+            <li><a href="sides.html" id="side-link">Sides</a></li>
+            <li><a href="dessert.html" id="dessert-link">Dessert</a></li>
+            <li><a href="drink.html" id="drink-link">Drinks</a></li>
+            <li><a href="checkout.html" id="checkout-link">Checkout</a></li>
+        </ul>
+    </nav>
+
+    <div class="black-box">
+        <div class="pizza-cards">
+          
+
+            <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+            
+                      <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>  
+            </div>
+
+
+             <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+          <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+           <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+            <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+            <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+            <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+             <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+             <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+             <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+             <div class="pizza-card">
+                <img src="pizza2.jpg" alt="Pepperoni Pizza">
+                <p>Pepperoni Pizza</p>
+                <div class="size-options">
+                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                </div>
+                <p class="price"></p>
+                <button class="clear-button" onclick="clearSelection(this.closest('.pizza-card'))">Clear Selection</button>
+                <div class="counter">
+                    <button class="counter-button" onclick="decrementCounter(this)">-</button>
+                    <span class="counter-value">0</span>
+                    <button class="counter-button" onclick="incrementCounter(this)">+</button>
+                </div>           
+            </div>
+
+
+
+        </div>
+    </div>
+          
+    <div class="total-background">
+        <div class="total">
+            <p id="total-amount" style="text-align: center; font-weight: bold;"></p>
+        </div>
+    </div>
+
+
+    
+</body>
+</html>
