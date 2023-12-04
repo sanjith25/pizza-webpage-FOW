@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet"  href="dessert.css">
+    <link rel="stylesheet"  href="drinks.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <script src="login.js"></script>
     <meta content="width=device-width, initial-scale=1" name="viewport" />
@@ -29,13 +29,13 @@
     
         function showData() {
         updateCartDisplay();
-        loadData();  // Call the loadData function without passing any parameters
+        loadData();  
     }
     
         const pizzaData = [
-            { size: "Small", price: 5 },
-            { size: "Medium", price: 10 },
-            { size: "Large", price: 15 }
+            { size: "350ML  ", price: 2.29 },
+            { size: "500ML", price: 3.99 },
+            { size: "1.25L", price: 4.49 }
         ];
     
         let totalAmount = 0;
@@ -47,7 +47,7 @@
             const counterValue = card.querySelector(".counter-value");
     
              card.dataset.selectedSize = index;
-            // card.dataset.selectedSize = pizzaData[index].size;
+           
     
             sizeButtons.forEach((btn) => btn.classList.remove("selected"));
             counterValue.textContent = "0";
@@ -95,7 +95,7 @@
                 value++;
                 counterValue.textContent = value;
     
-                // Trigger addToCart directly
+                
                 addToCart(button.closest('.pizza-card'));
                 saveData(button.closest('.pizza-card'));
             }
@@ -112,7 +112,7 @@
                 addToCart(button.closest('.pizza-card'));
                 
     
-               
+                
                 if (value === 0) {
                     const card = button.closest('.pizza-card');
                     clearSelection(card);
@@ -123,7 +123,7 @@
     
         function updateCartDisplay() {
             const cartDiv = document.getElementById('cart-items-container');
-            const cartData = JSON.parse(sessionStorage.getItem('sidescart')) || [];
+            const cartData = JSON.parse(sessionStorage.getItem('drinkscart')) || [];
     
             
             cartDiv.innerHTML = '';
@@ -148,13 +148,13 @@
                 const actualPrice = pizzaData[selectedIndex].price
     
                
-                const existingCart = JSON.parse(sessionStorage.getItem('sidescart')) || [];
+                const existingCart = JSON.parse(sessionStorage.getItem('drinkscart')) || [];
     
                 
                 const existingItem = existingCart.find(item => item.name === pizzaName);
     
                 if (existingItem) {
-                    
+                   
                     existingItem.size = pizzaSize;
                     existingItem.quantity = counterValue;
                     existingItem.price = pizzaPrice;
@@ -171,9 +171,9 @@
                 }
                        
                 
-                sessionStorage.setItem('sidescart', JSON.stringify(existingCart));
+                sessionStorage.setItem('drinkscart', JSON.stringify(existingCart));
     
-                
+               
                 updateTotal();
     
                 
@@ -187,23 +187,23 @@
         const counterValue = card.querySelector(".counter-value").textContent;
     
        
-    }
+        }
     
     function generateCardId(name, size) {
-      
+        
         const sanitizedName = name.replace(/\s+/g, '_');
         return `${sanitizedName}_${size}`;
     }
     
         
         function loadData() {
-            const cartData = JSON.parse(sessionStorage.getItem('sidescart')) || [];
+            const cartData = JSON.parse(sessionStorage.getItem('drinkscart')) || [];
     
     
     cartData.forEach(item => {
-        
+       
         const pizzaCard = [...document.querySelectorAll('.pizza-card')].find(card => {
-            const pizzaNameElement = card.querySelector('.sides-name');
+            const pizzaNameElement = card.querySelector('.drinks-name');
             return pizzaNameElement && pizzaNameElement.textContent === item.name;
         });
     
@@ -229,7 +229,7 @@
         }
     });
     
-   
+    
     updateTotal();
     
     console.log(cartData , "checkkkkkkkkk cartttttttttttt")
@@ -253,20 +253,21 @@
             return null;
         }
     
+      
     
     </script>
     
 
 <body>
     <div class="navbar">
-        <a href="sides.html" id="pizza-link"> Prev </a>
-        <h4 style="color: aliceblue;"> Desserts </h4>
-        <a href="drinks.html" id="dessert-link"> Next </a>
+        <a href="dessert.html" id="pizza-link"> Prev </a>
+        <h4 style="color: aliceblue;"> Drinks </h4>
+        <a href="checkout.html" id="dessert-link"> Next </a>
     </div>
-    </nav>
+    
 
     <button onclick="clearCart()" style="display: none;">Clear Cart</button>
-    <div id="cart" style="color: #ffffff;">
+    <div id="cart" style="color: black;">
         <div id="cart-items-container"></div>
 
     <div class="black-box">
@@ -274,12 +275,12 @@
           
 
             <div class="pizza-card">
-                <img src="cheesecake.jpg" alt="cheese cake">
-                <h3  class="sides-name">cheese cake</h3>
+                <img src="coke.webp" alt="cheese cake">
+                <h3  class="drinks-name">Coke</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                
@@ -292,12 +293,12 @@
 
             
                       <div class="pizza-card">
-                        <img src="cheesecake.jpg" alt="cheese cake">
-                        <h3  class="sides-name">Marquise Cake</h3>
+                        <img src="cocktail.webp" alt="cheese cake">
+                        <h3  class="drinks-name">Cocktail</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                 
@@ -311,11 +312,11 @@
 
              <div class="pizza-card">
                 <img src="cheesecake.jpg" alt="cheese cake">
-                <h3  class="sides-name">Bella Cassata</h3>
+                <h3  class="drinks-name">Bella Cassata</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                 
@@ -329,11 +330,11 @@
 
           <div class="pizza-card">
             <img src="cheesecake.jpg" alt="cheese cake">
-            <h3 class="sides-name">cheese & rasberry</h3>
+            <h3 class="drinks-name">cheese & rasberry</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                 
@@ -347,11 +348,11 @@
 
            <div class="pizza-card">
             <img src="cheesecake.jpg" alt="cheese cake">
-            <h3 class="sides-name">churos with dip</h3>
+            <h3 class="drinks-name">churos with dip</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                
@@ -365,11 +366,11 @@
 
             <div class="pizza-card">
                 <img src="cheesecake.jpg" alt="cheese cake">
-                <h3 class="sides-name">Choco cake</h3>
+                <h3 class="drinks-name">Choco cake</h3>
                 <div class="size-options">
-                    <button class="size-button" onclick="selectSize(this, 0)">Small</button>
-                    <button class="size-button" onclick="selectSize(this, 1)">Medium</button>
-                    <button class="size-button" onclick="selectSize(this, 2)">Large</button>
+                    <button class="size-button" onclick="selectSize(this, 0)">350ML</button>
+                    <button class="size-button" onclick="selectSize(this, 1)">450ML</button>
+                    <button class="size-button" onclick="selectSize(this, 2)">1.25L</button>
                 </div>
                 <p class="price"></p>
                 
@@ -379,8 +380,6 @@
                     <button class="counter-button" onclick="incrementCounter(this)">+</button>
                 </div>           
             </div>
-
-
 
         </div>
     </div>
