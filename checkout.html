@@ -195,67 +195,6 @@
 }
 </style>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-       
-        function updateCheckoutList(cartKey, listSelector) {
-            const checkoutList = document.querySelector(listSelector);
-            checkoutList.innerHTML = ''; 
-
-            
-            const cartItems = JSON.parse(sessionStorage.getItem(cartKey)) || [];
-
-            
-            cartItems.forEach((item, index) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `${item.quantity} * ${item.size} ${item.name} $${item.price.toFixed(2)}`;
-                checkoutList.appendChild(listItem);
-            });
-        }
-
-        
-        function updateCartDataList() {
-            const cartDataList = document.querySelector('.checkout-list.new-cart-list ul');
-            cartDataList.innerHTML = ''; 
-
-            
-            const cartData = JSON.parse(sessionStorage.getItem('cartData')) || {};
-            const cartItems = Object.entries(cartData.cart || {});
-
-            
-            cartItems.forEach(([itemName, quantity]) => {
-                const listItem = document.createElement('li');
-                listItem.innerHTML = `${quantity} * ${itemName.toString().trim()}`;
-                cartDataList.appendChild(listItem);
-            });
-        }
-
-        function logStorageData() {
-            console.log('drinkscart:', sessionStorage.getItem('drinkscart'));
-            console.log('sidescart:', sessionStorage.getItem('sidescart'));
-            console.log('cartData:', sessionStorage.getItem('cartData'));
-            console.log('cartData:', sessionStorage.getItem('cart'));
-        }
-
-        
-        updateCheckoutList('drinkscart', '.drink-list ul');
-        updateCheckoutList('sidescart', '.side-list ul');
-        updateCartDataList();
-        updateCheckoutList('cart', '.cart-list ul');
-
-       
-        window.addEventListener('storage', function (event) {
-            if (event.key === 'drinkscart' || event.key === 'sidescart' || event.key === 'cartData' || event.key === 'cart' ) {
-                console.log('Storage Changed:', event);
-                updateCheckoutList('drinkscart', '.drink-list ul');
-                updateCheckoutList('sidescart', '.side-list ul');
-                updateCartDataList();
-                updateCheckoutList('cart', '.cart-list ul');
-                logStorageData(); 
-            }
-        });
-    });
-</script>
 
 <body>
     <div class="menu-toggle">
@@ -333,7 +272,7 @@
         </div>
 
         <button type="submit">Place Order</button>
-       <a href="login.html"  class="logout">logout</a>
+        <a href="index.html" id="logout-link" class="logout">Logout</a>
     </form>
 </div>
 
@@ -342,4 +281,88 @@
     
 
 </body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        function updateCheckoutList(cartKey, listSelector) {
+            const checkoutList = document.querySelector(listSelector);
+            checkoutList.innerHTML = ''; 
+
+            
+            const cartItems = JSON.parse(sessionStorage.getItem(cartKey)) || [];
+
+            
+            cartItems.forEach((item, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${item.quantity} * ${item.size} ${item.name} $${item.price.toFixed(2)}`;
+                checkoutList.appendChild(listItem);
+            });
+        }
+
+        
+        function updateCartDataList() {
+            const cartDataList = document.querySelector('.checkout-list.new-cart-list ul');
+            cartDataList.innerHTML = ''; 
+
+            
+            const cartData = JSON.parse(sessionStorage.getItem('cartData')) || {};
+            const cartItems = Object.entries(cartData.cart || {});
+
+            
+            cartItems.forEach(([itemName, quantity]) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${quantity} * ${itemName.toString().trim()}`;
+                cartDataList.appendChild(listItem);
+            });
+        }
+
+        function logStorageData() {
+            console.log('drinkscart:', sessionStorage.getItem('drinkscart'));
+            console.log('sidescart:', sessionStorage.getItem('sidescart'));
+            console.log('cartData:', sessionStorage.getItem('cartData'));
+            console.log('cartData:', sessionStorage.getItem('cart'));
+        }
+
+        
+        updateCheckoutList('drinkscart', '.drink-list ul');
+        updateCheckoutList('sidescart', '.side-list ul');
+        updateCartDataList();
+        updateCheckoutList('cart', '.cart-list ul');
+
+       
+        window.addEventListener('storage', function (event) {
+            if (event.key === 'drinkscart' || event.key === 'sidescart' || event.key === 'cartData' || event.key === 'cart' ) {
+                console.log('Storage Changed:', event);
+                updateCheckoutList('drinkscart', '.drink-list ul');
+                updateCheckoutList('sidescart', '.side-list ul');
+                updateCartDataList();
+                updateCheckoutList('cart', '.cart-list ul');
+                logStorageData(); 
+            }
+        });
+    });
+
+    const logoutLink = document.getElementById('logout-link');
+        if (logoutLink) {
+            logoutLink.addEventListener('click', function (event) {
+                event.preventDefault();
+
+          
+                console.log('Logout link clicked');
+
+               
+                sessionStorage.removeItem('drinkscart');
+                sessionStorage.removeItem('sidescart');
+                sessionStorage.removeItem('cartData');
+                sessionStorage.removeItem('cart');
+
+                
+                console.log('Session data cleared');
+
+                
+                 window.location.href = 'index.html';
+            });
+        }
+</script>
 </html>
