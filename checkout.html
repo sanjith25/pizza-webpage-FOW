@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet"  href="checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="login.js"></script>
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+</head>
+
+<style>
+    body {
+    background-image: url('pizza8.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif; 
+}
+
+.menu-toggle {
+    display: none;
+}
+
+.navbar {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    background-color: #000000; 
+    text-align: center;
+    box-shadow: 0 0 10px 5px #ff6600;
+}
+
+.navbar li {
+    display: inline-block;
+    margin: 17px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff; 
+    padding: 10px 20px;
+    font-size: 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    
+}
+
+.navbar a:hover {
+    background-color: #ff6600; 
+    color: #fff; 
+}
+
+.black-box {
+    background-color: rgba(0, 0, 0, 0.5); 
+    margin: 20px;
+    border-radius: 10px;
+    color: #fff; 
+    height: 100%;
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+.checkout-form {
+    padding: 20px;
+    
+}
+
+.checkout-form h2 {
+    color: #fff;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.checkout-form form {
+    display: flex;
+    flex-direction: column;
+}
+
+.checkout-form label {
+    color: #fff;
+    margin-bottom: 8px;
+}
+
+.checkout-form input,
+.checkout-form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.checkout-form .card-details {
+    display: flex;
+    justify-content: space-between;
+}
+
+.checkout-form button {
+    background-color: #ff6600;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.checkout-form button:hover {
+    background-color: #e55d00;
+}
+
+.left-checkout{
+  width: 50%;
+  display: flex; 
+  flex-direction: column;
+}
+
+.checkout-list {
+    padding: 20px;
+}
+
+.checkout-list ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.checkout-list li {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 5px;
+    font-size: 16px;
+   width: 300px;
+}
+
+.checkout-list li:last-child {
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 480px) {
+    .menu-toggle {
+        display: block;
+        text-align: right;
+        margin: 10px;
+    }
+
+    .navbar {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        background-color: #333;
+        position: absolute;
+        top: 40px;
+        right: 0;
+       
+    }
+
+    .navbar.active {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .menu-toggle i {
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .menu-toggle:hover {
+        border: 1px solid black;
+        padding: 3px;
+    }
+
+}
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+       
+        function updateCheckoutList(cartKey, listSelector) {
+            const checkoutList = document.querySelector(listSelector);
+            checkoutList.innerHTML = ''; 
+
+            
+            const cartItems = JSON.parse(sessionStorage.getItem(cartKey)) || [];
+
+            
+            cartItems.forEach((item, index) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${item.quantity} * ${item.size} ${item.name} $${item.actualPrice.toFixed(2)}`;
+                checkoutList.appendChild(listItem);
+            });
+        }
+
+        
+        function updateCartDataList() {
+            const cartDataList = document.querySelector('.checkout-list.new-cart-list ul');
+            cartDataList.innerHTML = ''; 
+
+            
+            const cartData = JSON.parse(sessionStorage.getItem('cartData')) || {};
+            const cartItems = Object.entries(cartData.cart || {});
+
+            
+            cartItems.forEach(([itemName, quantity]) => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `${quantity} * ${itemName.toString().trim()}`;
+                cartDataList.appendChild(listItem);
+            });
+        }
+
+        function logStorageData() {
+            console.log('drinkscart:', sessionStorage.getItem('drinkscart'));
+            console.log('sidescart:', sessionStorage.getItem('sidescart'));
+            console.log('cartData:', sessionStorage.getItem('cartData'));
+            console.log('cartData:', sessionStorage.getItem('cart'));
+        }
+
+        
+        updateCheckoutList('drinkscart', '.drink-list ul');
+        updateCheckoutList('sidescart', '.side-list ul');
+        updateCartDataList();
+        updateCheckoutList('cart', '.cart-list ul');
+
+       
+        window.addEventListener('storage', function (event) {
+            if (event.key === 'drinkscart' || event.key === 'sidescart' || event.key === 'cartData' || event.key === 'cart' ) {
+                console.log('Storage Changed:', event);
+                updateCheckoutList('drinkscart', '.drink-list ul');
+                updateCheckoutList('sidescart', '.side-list ul');
+                updateCartDataList();
+                updateCheckoutList('cart', '.cart-list ul');
+                logStorageData(); 
+            }
+        });
+    });
+</script>
+
+<body>
+    <div class="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </div>
+    <nav>
+        <ul class="navbar">
+            <li><a href="pizza.html" id="pizza-link">Pizza</a></li>
+            <li><a href="sides.html" id="side-link">Sides</a></li>
+            <li><a href="dessert.html" id="dessert-link">Dessert</a></li>
+            <li><a href="drinks.html" id="drink-link">Drinks</a></li>
+            <li><a href="checkout.html" id="checkout-link">Checkout</a></li>
+        </ul>
+    </nav>
+
+
+    <div class="black-box">
+
+        <div class="left-checkout" > 
+    <div style="display: flex;">
+            <div class="checkout-list cart-list">
+                <h2>Pizza Summary</h2>
+                <ul></ul>
+        </div>
+    
+       
+            <div class="checkout-list new-cart-list">
+                <h2>Sides Summary</h2>
+                <ul></ul>
+        </div>
+
+    </div>
+
+
+    <div style="display: flex;">
+        <div class="checkout-list side-list">
+            <h2>Desserts Summary</h2>
+            <ul></ul>
+        </div>
+
+      <div class="checkout-list drink-list">
+            <h2>Drinks Summary</h2>
+            <ul></ul>
+        </div>
+    </div>
+</div>
+
+        <div class="checkout-form">
+    <h2>Checkout Form</h2>
+    <form action="#" method="post">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="firstname" placeholder="Your name.." required>
+
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lastname" placeholder="Your last name.." required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="Your email.." required>
+
+        <label for="address">Address</label>
+        <textarea id="address" name="address" placeholder="Your address.." required></textarea>
+
+        <label for="card">Credit Card Number</label>
+        <input type="text" id="card" name="card" placeholder="XXXX-XXXX-XXXX-XXXX" required>
+
+        <div class="card-details">
+            <div>
+                <label for="expiry">Expiry Date</label>
+                <input type="text" id="expiry" name="expiry" placeholder="MM/YY" required>
+            </div>
+            <div>
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="XXX" required>
+            </div>
+        </div>
+
+        <button type="submit">Place Order</button>
+    </form>
+</div>
+
+    </div>
+
+</body>
+</html>
